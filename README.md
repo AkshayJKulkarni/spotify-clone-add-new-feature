@@ -1,73 +1,51 @@
-# Welcome to your Lovable project
+Spotify Clone with AI Feature
+This is a pixel-perfect clone of Spotify, built for the Pixel Perfect Hackathon 2025. The project replicates Spotify's user interface with an additional AI-powered feature to enhance the user experience.
 
-## Project info
+Features
+Pixel-perfect design: The design follows the exact layout of the original Spotify web application.
 
-**URL**: https://lovable.dev/projects/96b9f531-786e-431c-93ca-e7fc472ff23e
+AI-powered music recommendations: Personalized music suggestions based on user listening history and preferences.
 
-## How can I edit this code?
+User-friendly interface: Easy navigation with intuitive controls and modern UI elements.
 
-There are several ways of editing your application.
+Search functionality: Users can search for songs, artists, albums, and playlists.
 
-**Use Lovable**
+Responsive design: Optimized for mobile and desktop devices.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/96b9f531-786e-431c-93ca-e7fc472ff23e) and start prompting.
+AI-Powered Feature
+The AI tool integrated into the project offers personalized music recommendations. Based on the user’s listening history (mocked for the hackathon), the AI engine predicts songs that the user is likely to enjoy. The tool uses a basic collaborative filtering algorithm to suggest music from genres and artists similar to what the user has listened to previously.
 
-Changes made via Lovable will be committed automatically to this repo.
+Tech Stack
+Frontend: HTML, CSS, JavaScript
 
-**Use your preferred IDE**
+AI Feature: Basic AI algorithms (Collaborative Filtering for music recommendations)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Tools Used: GitHub Copilot (for coding assistance)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+How to Run
+Clone the repository:
 
-Follow these steps:
+bash
+Copy
+Edit
+git clone https://github.com/yourusername/spotify-clone-ai-feature.git
+Open the project folder and start the project in any browser:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+bash
+Copy
+Edit
+open index.html
+AI Algorithm Overview
+The AI feature is a simple collaborative filtering algorithm that recommends music based on the following principles:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Tracks similar to those the user has already played.
 
-# Step 3: Install the necessary dependencies.
-npm i
+Songs from artists and genres the user has shown interest in.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+The algorithm matches the user’s past preferences with others who have similar tastes and suggests popular tracks from those users’ playlists.
 
-**Edit a file directly in GitHub**
+Contributing
+Feel free to fork the project, open issues, and submit pull requests. Contributions are always welcome!
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/96b9f531-786e-431c-93ca-e7fc472ff23e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
