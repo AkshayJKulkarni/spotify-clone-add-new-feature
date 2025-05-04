@@ -1,26 +1,1223 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spotify-remix-explorer-mood</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify - Web Player: Music for everyone</title>
+  <link rel="icon" href="https://open.spotifycdn.com/cdn/images/favicon.5cb2bd30.ico" type="image/x-icon">
+  <style>
+    /* CSS Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <meta property="og:title" content="spotify-remix-explorer-mood" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    @font-face {
+      font-family: 'Circular';
+      src: url('https://open.spotifycdn.com/fonts/CircularSpotifyText-Book.woff2') format('woff2');
+      font-weight: 400;
+    }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+    @font-face {
+      font-family: 'Circular';
+      src: url('https://open.spotifycdn.com/fonts/CircularSpotifyText-Bold.woff2') format('woff2');
+      font-weight: 700;
+    }
 
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    body {
+      font-family: 'Circular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #FFFFFF;
+      background-color: #000000;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+    }
+
+    .container {
+      max-width: 1170px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      transition: background-color 0.3s ease;
+    }
+
+    .header-scrolled {
+      background-color: #000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      padding: 0 30px;
+    }
+
+    .logo {
+      height: 40px;
+    }
+
+    .logo img {
+      height: 100%;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-link {
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 28px 0;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: #1ED760;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      height: 2px;
+      width: 100%;
+      background-color: #1ED760;
+      transition: transform 0.25s;
+    }
+
+    .nav-link:hover::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 24px;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(180deg, #1ED760 -50%, #121212 100%);
+      padding: 160px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 60px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .hero p {
+      font-size: 24px;
+      margin-bottom: 32px;
+      max-width: 70%;
+    }
+
+    .btn {
+      display: inline-block;
+      font-weight: 700;
+      text-align: center;
+      padding: 16px 32px;
+      border-radius: 500px;
+      transition: all 0.3s;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: #1ED760;
+      color: #000000;
+    }
+
+    .btn-primary:hover {
+      background-color: #1FDF64;
+      transform: scale(1.05);
+    }
+
+    .btn-outline {
+      border: 1px solid #FFFFFF;
+      color: #FFFFFF;
+      margin-left: 16px;
+    }
+
+    .btn-outline:hover {
+      transform: scale(1.05);
+      border-color: #1ED760;
+    }
+
+    /* Featured Playlists Section */
+    .featured {
+      background-color: #121212;
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+
+    .playlists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px;
+    }
+
+    .playlist-card {
+      background: #181818;
+      border-radius: 8px;
+      padding: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .playlist-card:hover {
+      background: #282828;
+    }
+
+    .playlist-image {
+      position: relative;
+      width: 100%;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .playlist-image img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+    }
+
+    .play-button {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 48px;
+      height: 48px;
+      background-color: #1ED760;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      color: #000;
+      font-size: 24px;
+    }
+
+    .playlist-card:hover .play-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .playlist-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playlist-description {
+      color: #A7A7A7;
+      font-size: 14px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    /* Premium Section */
+    .premium {
+      background-color: #EFEFEF;
+      color: #000000;
+      padding: 80px 0;
+    }
+
+    .premium-container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .premium-content {
+      flex: 1;
+    }
+
+    .premium h2 {
+      font-size: 40px;
+      font-weight: 900;
+      margin-bottom: 24px;
+    }
+
+    .premium-features {
+      margin-bottom: 32px;
+    }
+
+    .premium-feature {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon {
+      margin-right: 16px;
+      background-color: #1ED760;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .premium-image {
+      flex: 1;
+    }
+
+    .premium-image img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #000000;
+      padding: 80px 0 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-logo img {
+      height: 40px;
+      margin-bottom: 24px;
+    }
+
+    .footer-links-title {
+      color: #919496;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .footer-link {
+      color: #FFFFFF;
+      display: block;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    .footer-link:hover {
+      color: #1ED760;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #222326;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .social-icon:hover {
+      background-color: #1ED760;
+      transform: scale(1.1);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #282828;
+      padding-top: 20px;
+      font-size: 12px;
+      color: #919496;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-legal a:hover {
+      color: #1ED760;
+    }
+
+    .footer-country {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Smart Song Recommender Widget */
+    .discover-toggle {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #1ED760;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 99;
+      transition: all 0.3s;
+    }
+
+    .discover-toggle:hover {
+      transform: scale(1.1);
+      background-color: #1FDF64;
+    }
+
+    .discover-widget {
+      position: fixed;
+      top: 80px;
+      right: -400px;
+      width: 360px;
+      height: calc(100vh - 80px);
+      background-color: #121212;
+      z-index: 98;
+      padding: 30px;
+      border-left: 1px solid #282828;
+      box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow-y: auto;
+    }
+
+    .discover-widget.active {
+      right: 0;
+    }
+
+    .discover-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .discover-close {
+      background: transparent;
+      color: #FFFFFF;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .discover-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .mood-selector {
+      margin-bottom: 32px;
+    }
+
+    .mood-selector h3 {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .mood-btn {
+      background-color: #2A2A2A;
+      color: white;
+      border-radius: 500px;
+      padding: 10px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .mood-btn:hover {
+      background-color: #333;
+    }
+
+    .mood-btn.active {
+      background-color: #1ED760;
+      color: #000;
+    }
+
+    .activity-selector {
+      margin-bottom: 32px;
+    }
+
+    .activity-selector h3 {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .activity-btn {
+      background-color: #2A2A2A;
+      color: white;
+      border-radius: 500px;
+      padding: 10px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .activity-btn:hover {
+      background-color: #333;
+    }
+
+    .activity-btn.active {
+      background-color: #1ED760;
+      color: #000;
+    }
+
+    .recommendations {
+      margin-top: 32px;
+    }
+
+    .recommendations h3 {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .recommendations-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    .recommendations-grid.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .recommendation-item {
+      display: flex;
+      background-color: #181818;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .recommendation-item:hover {
+      background-color: #282828;
+    }
+
+    .recommendation-image {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+    }
+
+    .recommendation-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .recommendation-info {
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .recommendation-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .recommendation-artist {
+      font-size: 12px;
+      color: #A7A7A7;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+      .hero h1 {
+        font-size: 50px;
+      }
+      
+      .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .hero h1 {
+        font-size: 44px;
+      }
+
+      .premium-container {
+        flex-direction: column;
+      }
+      
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        height: 64px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero {
+        padding: 120px 0 60px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero p {
+        font-size: 18px;
+        max-width: 100%;
+      }
+
+      .footer-grid {
+        gap: 24px;
+      }
+
+      .discover-widget {
+        width: 300px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .btn-outline {
+        margin-left: 0;
+      }
+
+      .playlists-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .footer-legal {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .discover-widget {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <a href="#">
+          <svg viewBox="0 0 63 20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet" width="100%" height="100%">
+            <g fill-rule="evenodd" fill="currentColor">
+              <path d="M61.842 9.506a1.02 1.02 0 0 1-1.023-1.024c0-.562.453-1.03 1.029-1.03a1.02 1.02 0 0 1 1.023 1.024 1.03 1.03 0 0 1-1.029 1.03m.006-1.952a.915.915 0 0 0-.922.928c0 .51.394.921.916.921a.916.916 0 0 0 .922-.927.908.908 0 0 0-.916-.922m.226 1.027l.29.406h-.244l-.26-.372h-.225v.372h-.204V7.912h.48c.249 0 .413.128.413.343 0 .176-.102.284-.25.326m-.172-.485h-.267v.34h.267c.133 0 .212-.065.212-.17 0-.11-.08-.17-.212-.17m-12.804-3.52a1.043 1.043 0 1 0-.001 2.086 1.043 1.043 0 0 0 0-2.087m.72 2.89h-1.454a.107.107 0 0 0-.106.107v6.346c0 .06.047.107.106.107h1.455a.107.107 0 0 0 .107-.107V7.572a.107.107 0 0 0-.107-.107m3.233.006v-.2c0-.592.227-.856.736-.856.303 0 .546.06.82.152a.106.106 0 0 0 .14-.102V5.24a.107.107 0 0 0-.076-.102 3.993 3.993 0 0 0-1.21-.174c-1.343 0-2.053.757-2.053 2.188v.308h-.699a.107.107 0 0 0-.107.106v1.257c0 .059.048.107.107.107h.699v4.99c0 .058.047.106.106.106h1.455a.107.107 0 0 0 .106-.107v-4.99h1.358l2.081 4.99c-.236.523-.468.628-.785.628-.257 0-.527-.077-.803-.228a.109.109 0 0 0-.084-.008.106.106 0 0 0-.063.058l-.493 1.081a.106.106 0 0 0 .045.138c.515.279.98.398 1.554.398 1.074 0 1.668-.5 2.191-1.847L60.6 7.617a.106.106 0 0 0-.099-.146h-1.514a.107.107 0 0 0-.1.072l-1.552 4.431-1.7-4.434a.106.106 0 0 0-.099-.069h-2.485m-5.577-.006h-1.6V5.828a.106.106 0 0 0-.107-.106h-1.455a.107.107 0 0 0-.106.106v1.637h-.7a.106.106 0 0 0-.106.107v1.25c0 .059.048.107.106.107h.7v3.234c0 1.308.65 1.97 1.934 1.97.522 0 .954-.107 1.362-.338a.106.106 0 0 0 .054-.093v-1.19a.106.106 0 0 0-.154-.096c-.28.141-.551.206-.854.206-.467 0-.675-.211-.675-.686V8.929h1.6a.106.106 0 0 0 .107-.107v-1.25a.106.106 0 0 0-.106-.107m-7.671-.133c-1.96 0-3.497 1.51-3.497 3.437 0 1.907 1.526 3.4 3.473 3.4 1.967 0 3.508-1.504 3.508-3.424 0-1.914-1.53-3.413-3.484-3.413m0 5.362c-1.043 0-1.83-.838-1.83-1.95 0-1.115.76-1.924 1.806-1.924 1.05 0 1.84.838 1.84 1.95 0 1.115-.763 1.924-1.816 1.924m-7.014-5.362c-.82 0-1.492.323-2.046.984v-.744a.107.107 0 0 0-.106-.107h-1.455a.107.107 0 0 0-.106.107v8.27c0 .058.048.106.106.106h1.455a.107.107 0 0 0 .106-.106v-2.61c.555.621 1.227.925 2.046.925 1.522 0 3.063-1.172 3.063-3.412s-1.54-3.413-3.063-3.413m1.372 3.413c0 1.14-.703 1.937-1.709 1.937-.995 0-1.745-.833-1.745-1.937s.75-1.937 1.745-1.937c.99 0 1.71.814 1.71 1.937m-8.437-1.81c-1.624-.388-1.913-.66-1.913-1.231 0-.54.508-.903 1.264-.903.732 0 1.459.275 2.22.843a.107.107 0 0 0 .15-.023l.794-1.119a.107.107 0 0 0-.02-.144c-.906-.728-1.927-1.081-3.12-1.081-1.755 0-2.98 1.052-2.98 2.559 0 1.615 1.057 2.187 2.884 2.628 1.554.358 1.817.658 1.817 1.195 0 .594-.53.963-1.385.963-.948 0-1.721-.32-2.587-1.068a.11.11 0 0 0-.078-.026.105.105 0 0 0-.073.038l-.89 1.058a.105.105 0 0 0 .011.148 5.303 5.303 0 0 0 3.581 1.373c1.89 0 3.112-1.033 3.112-2.631 0-1.351-.807-2.098-2.787-2.58M9.507.305a9.41 9.41 0 1 0 0 18.82 9.41 9.41 0 0 0 0-18.82m4.316 13.572a.586.586 0 0 1-.807.195c-2.21-1.35-4.99-1.655-8.266-.907a.586.586 0 1 1-.261-1.143c3.584-.82 6.659-.467 9.139 1.049.276.169.363.53.195.806m1.15-2.562a.734.734 0 0 1-1.008.242c-2.529-1.555-6.385-2.005-9.377-1.097a.735.735 0 0 1-.426-1.404c3.418-1.037 7.666-.534 10.57 1.25a.734.734 0 0 1 .242 1.01m.1-2.669C12.04 6.846 7.036 6.68 4.141 7.56a.88.88 0 1 1-.511-1.684c3.323-1.01 8.849-.814 12.34 1.258a.88.88 0 0 1-.898 1.514"></path>
+            </g>
+          </svg>
+        </a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link">Premium</a></li>
+        <li><a href="#" class="nav-link">Support</a></li>
+        <li><a href="#" class="nav-link">Download</a></li>
+        <li><a href="#" class="nav-link">Sign up</a></li>
+        <li><a href="#" class="nav-link">Log in</a></li>
+      </ul>
+
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Music for everyone.</h1>
+        <p>Millions of songs. No credit card needed.</p>
+        <div class="buttons">
+          <a href="#" class="btn btn-primary">GET SPOTIFY FREE</a>
+          <a href="#" class="btn btn-outline">DOWNLOAD</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Playlists -->
+  <section class="featured">
+    <div class="container">
+      <h2 class="section-title">Featured Playlists</h2>
+      <div class="playlists-grid">
+        <!-- Playlist 1 -->
+        <div class="playlist-card">
+          <div class="playlist-image">
+            <img src="https://i.scdn.co/image/ab67706f00000002ca5a7517156021292e5663a6" alt="Playlist">
+            <button class="play-button">▶</button>
+          </div>
+          <h3 class="playlist-title">Today's Top Hits</h3>
+          <p class="playlist-description">Jung Kook is on top of the Hottest 50!</p>
+        </div>
+
+        <!-- Playlist 2 -->
+        <div class="playlist-card">
+          <div class="playlist-image">
+            <img src="https://i.scdn.co/image/ab67706f00000002b0fe40a6e1692822f5a9d8f1" alt="Playlist">
+            <button class="play-button">▶</button>
+          </div>
+          <h3 class="playlist-title">RapCaviar</h3>
+          <p class="playlist-description">New music from Drake, Kendrick Lamar and more.</p>
+        </div>
+
+        <!-- Playlist 3 -->
+        <div class="playlist-card">
+          <div class="playlist-image">
+            <img src="https://i.scdn.co/image/ab67706f00000002b75d182ee09a8137a7caac39" alt="Playlist">
+            <button class="play-button">▶</button>
+          </div>
+          <h3 class="playlist-title">All Out 2010s</h3>
+          <p class="playlist-description">The biggest songs of the 2010s.</p>
+        </div>
+
+        <!-- Playlist 4 -->
+        <div class="playlist-card">
+          <div class="playlist-image">
+            <img src="https://i.scdn.co/image/ab67706f000000025551996f500ba876bda73fa5" alt="Playlist">
+            <button class="play-button">▶</button>
+          </div>
+          <h3 class="playlist-title">Rock Classics</h3>
+          <p class="playlist-description">Rock legends & epic songs that continue to inspire generations.</p>
+        </div>
+
+        <!-- Playlist 5 -->
+        <div class="playlist-card">
+          <div class="playlist-image">
+            <img src="https://i.scdn.co/image/ab67706f000000026013e55f0494fe5b8e31951b" alt="Playlist">
+            <button class="play-button">▶</button>
+          </div>
+          <h3 class="playlist-title">Chill Hits</h3>
+          <p class="playlist-description">Kick back to the best new and recent chill hits.</p>
+        </div>
+
+        <!-- Playlist 6 -->
+        <div class="playlist-card">
+          <div class="playlist-image">
+            <img src="https://i.scdn.co/image/ab67706f00000002ad9ff8af87e8ea815f2ff25c" alt="Playlist">
+            <button class="play-button">▶</button>
+          </div>
+          <h3 class="playlist-title">Mood Booster</h3>
+          <p class="playlist-description">Feel good with this positively charged playlist!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Section -->
+  <section class="premium">
+    <div class="container premium-container">
+      <div class="premium-content">
+        <h2>Get Premium free for 1 month</h2>
+        <div class="premium-features">
+          <div class="premium-feature">
+            <div class="feature-icon">✓</div>
+            <div>Ad-free music listening</div>
+          </div>
+          <div class="premium-feature">
+            <div class="feature-icon">✓</div>
+            <div>Download to listen offline</div>
+          </div>
+          <div class="premium-feature">
+            <div class="feature-icon">✓</div>
+            <div>Play songs in any order</div>
+          </div>
+          <div class="premium-feature">
+            <div class="feature-icon">✓</div>
+            <div>Higher sound quality</div>
+          </div>
+        </div>
+        <a href="#" class="btn btn-primary">GET PREMIUM</a>
+      </div>
+      <div class="premium-image">
+        <img src="https://i.scdn.co/image/ab678e040000ed3adcd801f861614ad2182a1ad7" alt="Premium">
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-logo">
+          <a href="#">
+            <svg viewBox="0 0 63 20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet" width="100%" height="100%">
+              <g fill-rule="evenodd" fill="currentColor">
+                <path d="M61.842 9.506a1.02 1.02 0 0 1-1.023-1.024c0-.562.453-1.03 1.029-1.03a1.02 1.02 0 0 1 1.023 1.024 1.03 1.03 0 0 1-1.029 1.03m.006-1.952a.915.915 0 0 0-.922.928c0 .51.394.921.916.921a.916.916 0 0 0 .922-.927.908.908 0 0 0-.916-.922m.226 1.027l.29.406h-.244l-.26-.372h-.225v.372h-.204V7.912h.48c.249 0 .413.128.413.343 0 .176-.102.284-.25.326m-.172-.485h-.267v.34h.267c.133 0 .212-.065.212-.17 0-.11-.08-.17-.212-.17m-12.804-3.52a1.043 1.043 0 1 0-.001 2.086 1.043 1.043 0 0 0 0-2.087m.72 2.89h-1.454a.107.107 0 0 0-.106.107v6.346c0 .06.047.107.106.107h1.455a.107.107 0 0 0 .107-.107V7.572a.107.107 0 0 0-.107-.107m3.233.006v-.2c0-.592.227-.856.736-.856.303 0 .546.06.82.152a.106.106 0 0 0 .14-.102V5.24a.107.107 0 0 0-.076-.102 3.993 3.993 0 0 0-1.21-.174c-1.343 0-2.053.757-2.053 2.188v.308h-.699a.107.107 0 0 0-.107.106v1.257c0 .059.048.107.107.107h.699v4.99c0 .058.047.106.106.106h1.455a.107.107 0 0 0 .106-.107v-4.99h1.358l2.081 4.99c-.236.523-.468.628-.785.628-.257 0-.527-.077-.803-.228a.109.109 0 0 0-.084-.008.106.106 0 0 0-.063.058l-.493 1.081a.106.106 0 0 0 .045.138c.515.279.98.398 1.554.398 1.074 0 1.668-.5 2.191-1.847L60.6 7.617a.106.106 0 0 0-.099-.146h-1.514a.107.107 0 0 0-.1.072l-1.552 4.431-1.7-4.434a.106.106 0 0 0-.099-.069h-2.485m-5.577-.006h-1.6V5.828a.106.106 0 0 0-.107-.106h-1.455a.107.107 0 0 0-.106.106v1.637h-.7a.106.106 0 0 0-.106.107v1.25c0 .059.048.107.106.107h.7v3.234c0 1.308.65 1.97 1.934 1.97.522 0 .954-.107 1.362-.338a.106.106 0 0 0 .054-.093v-1.19a.106.106 0 0 0-.154-.096c-.28.141-.551.206-.854.206-.467 0-.675-.211-.675-.686V8.929h1.6a.106.106 0 0 0 .107-.107v-1.25a.106.106 0 0 0-.106-.107m-7.671-.133c-1.96 0-3.497 1.51-3.497 3.437 0 1.907 1.526 3.4 3.473 3.4 1.967 0 3.508-1.504 3.508-3.424 0-1.914-1.53-3.413-3.484-3.413m0 5.362c-1.043 0-1.83-.838-1.83-1.95 0-1.115.76-1.924 1.806-1.924 1.05 0 1.84.838 1.84 1.95 0 1.115-.763 1.924-1.816 1.924m-7.014-5.362c-.82 0-1.492.323-2.046.984v-.744a.107.107 0 0 0-.106-.107h-1.455a.107.107 0 0 0-.106.107v8.27c0 .058.048.106.106.106h1.455a.107.107 0 0 0 .106-.106v-2.61c.555.621 1.227.925 2.046.925 1.522 0 3.063-1.172 3.063-3.412s-1.54-3.413-3.063-3.413m1.372 3.413c0 1.14-.703 1.937-1.709 1.937-.995 0-1.745-.833-1.745-1.937s.75-1.937 1.745-1.937c.99 0 1.71.814 1.71 1.937m-8.437-1.81c-1.624-.388-1.913-.66-1.913-1.231 0-.54.508-.903 1.264-.903.732 0 1.459.275 2.22.843a.107.107 0 0 0 .15-.023l.794-1.119a.107.107 0 0 0-.02-.144c-.906-.728-1.927-1.081-3.12-1.081-1.755 0-2.98 1.052-2.98 2.559 0 1.615 1.057 2.187 2.884 2.628 1.554.358 1.817.658 1.817 1.195 0 .594-.53.963-1.385.963-.948 0-1.721-.32-2.587-1.068a.11.11 0 0 0-.078-.026.105.105 0 0 0-.073.038l-.89 1.058a.105.105 0 0 0 .011.148 5.303 5.303 0 0 0 3.581 1.373c1.89 0 3.112-1.033 3.112-2.631 0-1.351-.807-2.098-2.787-2.58M9.507.305a9.41 9.41 0 1 0 0 18.82 9.41 9.41 0 0 0 0-18.82m4.316 13.572a.586.586 0 0 1-.807.195c-2.21-1.35-4.99-1.655-8.266-.907a.586.586 0 1 1-.261-1.143c3.584-.82 6.659-.467 9.139 1.049.276.169.363.53.195.806m1.15-2.562a.734.734 0 0 1-1.008.242c-2.529-1.555-6.385-2.005-9.377-1.097a.735.735 0 0 1-.426-1.404c3.418-1.037 7.666-.534 10.57 1.25a.734.734 0 0 1 .242 1.01m.1-2.669C12.04 6.846 7.036 6.68 4.141 7.56a.88.88 0 1 1-.511-1.684c3.323-1.01 8.849-.814 12.34 1.258a.88.88 0 0 1-.898 1.514"></path>
+              </g>
+            </svg>
+          </a>
+          <div class="social-icons">
+            <a href="#" class="social-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFFFFF" viewBox="0 0 512 512">
+                <path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376.6 92.3 475.8 204 503V325.8h-61V256h61v-53.4c0-60.4 35.9-93.8 91.2-93.8c26.4 0 54.2 4.7 54.2 4.7v59.8h-30.5c-30.1 0-39.4 18.7-39.4 37.8V256h67.1l-10.7 69.8H279V503C390.7 475.8 512 376.6 512 256z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFFFFF" viewBox="0 0 512 512">
+                <path d="M459.4 151.7c.3 4.5.3 9.1.3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53 51.7 63.7 129.3 105.3 216.4 109.8-1.6-7.8-2.6-15.9-2.6-24 0-57.8 46.8-104.9 104.9-104.9 30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFFFFF" viewBox="0 0 448 512">
+                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h3 class="footer-links-title">Company</h3>
+          <a href="#" class="footer-link">About</a>
+          <a href="#" class="footer-link">Jobs</a>
+          <a href="#" class="footer-link">For the Record</a>
+        </div>
+
+        <div class="footer-links">
+          <h3 class="footer-links-title">Communities</h3>
+          <a href="#" class="footer-link">For Artists</a>
+          <a href="#" class="footer-link">Developers</a>
+          <a href="#" class="footer-link">Advertising</a>
+          <a href="#" class="footer-link">Investors</a>
+          <a href="#" class="footer-link">Vendors</a>
+        </div>
+
+        <div class="footer-links">
+          <h3 class="footer-links-title">Useful Links</h3>
+          <a href="#" class="footer-link">Support</a>
+          <a href="#" class="footer-link">Web Player</a>
+          <a href="#" class="footer-link">Free Mobile App</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <a href="#">Legal</a>
+          <a href="#">Privacy Center</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookies</a>
+          <a href="#">About Ads</a>
+        </div>
+        <div class="footer-country">
+          <span>© 2023 Spotify AB</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Smart Song Recommender Widget -->
+  <button class="discover-toggle">🎧</button>
+
+  <div class="discover-widget">
+    <div class="discover-header">
+      <h2 class="discover-title">🎧 Discover Mode</h2>
+      <button class="discover-close">✖</button>
+    </div>
+
+    <div class="mood-selector">
+      <h3>How are you feeling?</h3>
+      <div class="mood-grid">
+        <button class="mood-btn" data-mood="happy">😊 Happy</button>
+        <button class="mood-btn" data-mood="sad">😢 Sad</button>
+        <button class="mood-btn" data-mood="energetic">🔥 Energetic</button>
+        <button class="mood-btn" data-mood="chill">😌 Chill</button>
+        <button class="mood-btn" data-mood="focused">🧠 Focused</button>
+        <button class="mood-btn" data-mood="romantic">💖 Romantic</button>
+      </div>
+    </div>
+
+    <div class="activity-selector">
+      <h3>What are you doing?</h3>
+      <div class="activity-grid">
+        <button class="activity-btn" data-activity="workout">💪 Workout</button>
+        <button class="activity-btn" data-activity="studying">📚 Studying</button>
+        <button class="activity-btn" data-activity="cooking">🍳 Cooking</button>
+        <button class="activity-btn" data-activity="party">🎉 Party</button>
+      </div>
+    </div>
+    
+    <div class="recommendations">
+      <h3>Recommended for you</h3>
+      <div class="recommendations-grid" id="recommendations-container">
+        <!-- Recommendations will be dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Header scroll effect
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          header.classList.add('header-scrolled');
+        } else {
+          header.classList.remove('header-scrolled');
+        }
+      });
+
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const navLinks = document.querySelector('.nav-links');
+      
+      mobileMenuBtn.addEventListener('click', function() {
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      // Discover Mode Widget
+      const discoverToggle = document.querySelector('.discover-toggle');
+      const discoverWidget = document.querySelector('.discover-widget');
+      const discoverClose = document.querySelector('.discover-close');
+      const moodBtns = document.querySelectorAll('.mood-btn');
+      const activityBtns = document.querySelectorAll('.activity-btn');
+      const recommendationsContainer = document.getElementById('recommendations-container');
+      
+      let selectedMood = null;
+      let selectedActivity = null;
+
+      // Sample songs database organized by mood and activity
+      const songDatabase = {
+        happy: {
+          general: [
+            {title: 'Happy', artist: 'Pharrell Williams', image: 'https://i.scdn.co/image/ab67616d00001e02e8107e6d9214baa81bb79bba'},
+            {title: 'Walking on Sunshine', artist: 'Katrina & The Waves', image: 'https://i.scdn.co/image/ab67616d00001e027a39d08057a52acb5a7f857c'},
+            {title: "Can't Stop the Feeling!", artist: 'Justin Timberlake', image: 'https://i.scdn.co/image/ab67616d00001e02f46b9d202509a8f7384b90de'},
+          ],
+          workout: [
+            {title: 'Good as Hell', artist: 'Lizzo', image: 'https://i.scdn.co/image/ab67616d00001e024573401205623a5fa3428b80'},
+            {title: 'Uptown Funk', artist: 'Mark Ronson ft. Bruno Mars', image: 'https://i.scdn.co/image/ab67616d00001e02e229393213a85d269f552878'},
+          ],
+          studying: [
+            {title: 'Here Comes the Sun', artist: 'The Beatles', image: 'https://i.scdn.co/image/ab67616d00001e02dc30583ba717007b00cceb25'},
+            {title: 'Lovely Day', artist: 'Bill Withers', image: 'https://i.scdn.co/image/ab67616d00001e02e4815d9e6fe2c47c5be1f359'},
+          ],
+          cooking: [
+            {title: 'Juice', artist: 'Lizzo', image: 'https://i.scdn.co/image/ab67616d00001e024573401205623a5fa3428b80'},
+            {title: "Don't Worry Be Happy", artist: 'Bobby McFerrin', image: 'https://i.scdn.co/image/ab67616d00001e02da5274a49917f44b4e2b69da'},
+          ],
+          party: [
+            {title: 'Celebration', artist: 'Kool & The Gang', image: 'https://i.scdn.co/image/ab67616d00001e0203c517043707b0f2def24cae'},
+            {title: 'Best Day Of My Life', artist: 'American Authors', image: 'https://i.scdn.co/image/ab67616d00001e02e8fc1664a647ba34e04c1895'},
+          ]
+        },
+        sad: {
+          general: [
+            {title: 'Someone Like You', artist: 'Adele', image: 'https://i.scdn.co/image/ab67616d00001e0299611c614801b4706985cfc6'},
+            {title: 'Fix You', artist: 'Coldplay', image: 'https://i.scdn.co/image/ab67616d00001e020cc10f246b7f26d5607eeb06'},
+            {title: 'Skinny Love', artist: 'Bon Iver', image: 'https://i.scdn.co/image/ab67616d00001e0241f289434dd12cf631838c70'},
+          ],
+          workout: [
+            {title: 'Hurt', artist: 'Johnny Cash', image: 'https://i.scdn.co/image/ab67616d00001e0241e31d6ea1d493dd77932ee5'},
+            {title: 'Heavy', artist: 'Linkin Park ft. Kiiara', image: 'https://i.scdn.co/image/ab67616d00001e02145e83a6f45f144966459c4c'},
+          ],
+          studying: [
+            {title: 'Breathe Me', artist: 'Sia', image: 'https://i.scdn.co/image/ab67616d00001e027b9c4dca67dd29a36a05a85c'},
+            {title: 'Moonlight Sonata', artist: 'Beethoven', image: 'https://i.scdn.co/image/ab67616d00001e0207f719b9f6a62cfec7e5f894'},
+          ],
+          cooking: [
+            {title: 'Back to Black', artist: 'Amy Winehouse', image: 'https://i.scdn.co/image/ab67616d00001e02da401c6225e8fd7ddb618dbf'},
+            {title: 'Nothing Compares 2 U', artist: 'Sinéad O\'Connor', image: 'https://i.scdn.co/image/ab67616d00001e02be0f25c61c750cf775b48b2b'},
+          ],
+          party: [
+            {title: "Everybody Hurts", artist: 'R.E.M.', image: 'https://i.scdn.co/image/ab67616d00001e02f054d3fcf14c907d05fe2f91'},
+            {title: 'Mr. Brightside', artist: 'The Killers', image: 'https://i.scdn.co/image/ab67616d00001e0201134ddcbf00d9af57742b37'},
+          ]
+        },
+        energetic: {
+          general: [
+            {title: 'Thunderstruck', artist: 'AC/DC', image: 'https://i.scdn.co/image/ab67616d00001e02cef1fd5317cf6db361289f60'},
+            {title: "Can't Hold Us", artist: 'Macklemore & Ryan Lewis', image: 'https://i.scdn.co/image/ab67616d00001e029b19c107109de740bad72df5'},
+            {title: 'Eye of the Tiger', artist: 'Survivor', image: 'https://i.scdn.co/image/ab67616d00001e0252c96f47783af12025ac3447'},
+          ],
+          workout: [
+            {title: 'Stronger', artist: 'Kanye West', image: 'https://i.scdn.co/image/ab67616d00001e02f7577e78857f970f5ea4ab3d'},
+            {title: 'Till I Collapse', artist: 'Eminem', image: 'https://i.scdn.co/image/ab67616d00001e02e3f51f31dc7cffa6c8cc515f'},
+          ],
+          studying: [
+            {title: 'Symphony No. 5', artist: 'Beethoven', image: 'https://i.scdn.co/image/ab67616d00001e0207f719b9f6a62cfec7e5f894'},
+            {title: 'Flight of the Bumblebee', artist: 'Rimsky-Korsakov', image: 'https://i.scdn.co/image/ab67616d00001e0219c9b7bc7dd0edacea4adc93'},
+          ],
+          cooking: [
+            {title: 'Blinding Lights', artist: 'The Weeknd', image: 'https://i.scdn.co/image/ab67616d00001e02c8b444df094279e70d0ed856'},
+            {title: 'Uptown Funk', artist: 'Mark Ronson ft. Bruno Mars', image: 'https://i.scdn.co/image/ab67616d00001e02e229393213a85d269f552878'},
+          ],
+          party: [
+            {title: 'Turn Down for What', artist: 'DJ Snake, Lil Jon', image: 'https://i.scdn.co/image/ab67616d00001e0214de4b512ec7324eb08169a8'},
+            {title: 'Levels', artist: 'Avicii', image: 'https://i.scdn.co/image/ab67616d00001e02069c1f87ee77ef7baffe8067'},
+          ]
+        },
+        chill: {
+          general: [
+            {title: 'Sweater Weather', artist: 'The Neighbourhood', image: 'https://i.scdn.co/image/ab67616d00001e023059a9fdd0fa49b220cba2e3'},
+            {title: 'Banana Pancakes', artist: 'Jack Johnson', image: 'https://i.scdn.co/image/ab67616d00001e02835a6488d9ce230167ae2cef'},
+            {title: 'Sunday Morning', artist: 'Maroon 5', image: 'https://i.scdn.co/image/ab67616d00001e0290a47e95ecdcf1fba9efe2de'},
+          ],
+          workout: [
+            {title: 'Yellow', artist: 'Coldplay', image: 'https://i.scdn.co/image/ab67616d00001e02de09dc6c2d8d312cb256769b'},
+            {title: 'Better Together', artist: 'Jack Johnson', image: 'https://i.scdn.co/image/ab67616d00001e02835a6488d9ce230167ae2cef'},
+          ],
+          studying: [
+            {title: 'Clair de Lune', artist: 'Debussy', image: 'https://i.scdn.co/image/ab67616d00001e0200664224999aa7bb9aae9c2b'},
+            {title: 'Coffee', artist: 'Beabadoobee', image: 'https://i.scdn.co/image/ab67616d00001e02ad500e4998a08e59589d92f8'},
+          ],
+          cooking: [
+            {title: 'Sunday Morning', artist: 'Maroon 5', image: 'https://i.scdn.co/image/ab67616d00001e0290a47e95ecdcf1fba9efe2de'},
+            {title: 'Three Little Birds', artist: 'Bob Marley', image: 'https://i.scdn.co/image/ab67616d00001e029c893175181f7f9c6222795f'},
+          ],
+          party: [
+            {title: 'Redbone', artist: 'Childish Gambino', image: 'https://i.scdn.co/image/ab67616d00001e0250a3147b4edd7701a876c6ce'},
+            {title: 'The Less I Know The Better', artist: 'Tame Impala', image: 'https://i.scdn.co/image/ab67616d00001e02597f9c2ec2f8ec5c522c7c1c'},
+          ]
+        },
+        focused: {
+          general: [
+            {title: 'Brain Power', artist: 'Lo-Fi Study Music', image: 'https://i.scdn.co/image/ab67616d00001e02c93bc6be1c030334f10fabcd'},
+            {title: 'Spring 1', artist: 'Max Richter', image: 'https://i.scdn.co/image/ab67616d00001e02a54f1f36e79396c7d14546fe'},
+            {title: 'Experience', artist: 'Ludovico Einaudi', image: 'https://i.scdn.co/image/ab67616d00001e02094833b4b838aa0aee039bb9'},
+          ],
+          workout: [
+            {title: 'The Scientist', artist: 'Coldplay', image: 'https://i.scdn.co/image/ab67616d00001e0290a47e95ecdcf1fba9efe2de'},
+            {title: 'Gymnopédie No. 1', artist: 'Erik Satie', image: 'https://i.scdn.co/image/ab67616d00001e022f7825848cc74cb9bcdb8524'},
+          ],
+          studying: [
+            {title: 'Gymnopédie No. 1', artist: 'Erik Satie', image: 'https://i.scdn.co/image/ab67616d00001e022f7825848cc74cb9bcdb8524'},
+            {title: 'Moonlight Sonata', artist: 'Beethoven', image: 'https://i.scdn.co/image/ab67616d00001e0207f719b9f6a62cfec7e5f894'},
+          ],
+          cooking: [
+            {title: 'Nuvole Bianche', artist: 'Ludovico Einaudi', image: 'https://i.scdn.co/image/ab67616d00001e02094833b4b838aa0aee039bb9'},
+            {title: 'River Flows In You', artist: 'Yiruma', image: 'https://i.scdn.co/image/ab67616d00001e02e0afe806e1273436135fed60'},
+          ],
+          party: [
+            {title: 'Space Oddity', artist: 'David Bowie', image: 'https://i.scdn.co/image/ab67616d00001e02c41f4e1133f0e6fba6c73fac'},
+            {title: 'Comfortably Numb', artist: 'Pink Floyd', image: 'https://i.scdn.co/image/ab67616d00001e02bbd3cbf49d96c72fc75a70f7'},
+          ]
+        },
+        romantic: {
+          general: [
+            {title: 'All of Me', artist: 'John Legend', image: 'https://i.scdn.co/image/ab67616d00001e02033aaccb4a7f0efa55b5e93f'},
+            {title: 'Perfect', artist: 'Ed Sheeran', image: 'https://i.scdn.co/image/ab67616d00001e02ba5db46f4b838ef6027e6f96'},
+            {title: 'At Last', artist: 'Etta James', image: 'https://i.scdn.co/image/ab67616d00001e02662b53c1e7621493ad3f3e6b'},
+          ],
+          workout: [
+            {title: 'Can\'t Help Falling In Love', artist: 'Elvis Presley', image: 'https://i.scdn.co/image/ab67616d00001e022dfa7b9b5d28d4cd3476a669'},
+            {title: 'Make You Feel My Love', artist: 'Adele', image: 'https://i.scdn.co/image/ab67616d00001e0299611c614801b4706985cfc6'},
+          ],
+          studying: [
+            {title: 'La Vie en Rose', artist: 'Louis Armstrong', image: 'https://i.scdn.co/image/ab67616d00001e02f3ec7693f4567df866806992'},
+            {title: 'Clair de Lune', artist: 'Debussy', image: 'https://i.scdn.co/image/ab67616d00001e0200664224999aa7bb9aae9c2b'},
+          ],
+          cooking: [
+            {title: 'The Way You Look Tonight', artist: 'Frank Sinatra', image: 'https://i.scdn.co/image/ab67616d00001e02bd572f2e77983bc0989f0923'},
+            {title: 'Dream a Little Dream of Me', artist: 'Ella Fitzgerald', image: 'https://i.scdn.co/image/ab67616d00001e0200e4aa1cafa624cef2244467'},
+          ],
+          party: [
+            {title: 'Love On Top', artist: 'Beyoncé', image: 'https://i.scdn.co/image/ab67616d00001e027e1fea351cecc027afcaa5b0'},
+            {title: 'Crazy In Love', artist: 'Beyoncé ft. Jay-Z', image: 'https://i.scdn.co/image/ab67616d00001e027e1fea351cecc027afcaa5b0'},
+          ]
+        }
+      };
+
+      // Toggle Discover Widget
+      discoverToggle.addEventListener('click', function() {
+        discoverWidget.classList.toggle('active');
+      });
+
+      // Close Discover Widget
+      discoverClose.addEventListener('click', function() {
+        discoverWidget.classList.remove('active');
+      });
+
+      // Mood Selection
+      moodBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Remove active class from all mood buttons
+          moodBtns.forEach(b => b.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Store selected mood
+          selectedMood = this.getAttribute('data-mood');
+          
+          // Update recommendations
+          updateRecommendations();
+        });
+      });
+
+      // Activity Selection
+      activityBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Remove active class from all activity buttons
+          activityBtns.forEach(b => b.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Store selected activity
+          selectedActivity = this.getAttribute('data-activity');
+          
+          // Update recommendations
+          updateRecommendations();
+        });
+      });
+
+      // Update Recommendations
+      function updateRecommendations() {
+        // Clear current recommendations
+        recommendationsContainer.innerHTML = '';
+        
+        if (selectedMood) {
+          let recommendations;
+          
+          // If both mood and activity are selected
+          if (selectedActivity && songDatabase[selectedMood][selectedActivity]) {
+            recommendations = songDatabase[selectedMood][selectedActivity];
+          } 
+          // If only mood is selected
+          else {
+            recommendations = songDatabase[selectedMood].general;
+          }
+          
+          // Create recommendation items
+          recommendations.forEach(song => {
+            const item = document.createElement('div');
+            item.classList.add('recommendation-item');
+            
+            item.innerHTML = `
+              <div class="recommendation-image">
+                <img src="${song.image}" alt="${song.title}">
+              </div>
+              <div class="recommendation-info">
+                <div class="recommendation-title">${song.title}</div>
+                <div class="recommendation-artist">${song.artist}</div>
+              </div>
+            `;
+            
+            recommendationsContainer.appendChild(item);
+          });
+          
+          // Show recommendations with animation
+          setTimeout(() => {
+            recommendationsContainer.classList.add('show');
+          }, 100);
+        }
+      }
+    });
+  </script>
+</body>
 </html>
+
